@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
 
@@ -19,7 +18,7 @@ namespace ASPxDashboard {
         }
 
         protected void ASPxDashboard1_DataLoading(object sender, DataLoadingWebEventArgs e) {
-            if (e.DataSourceName.StartsWith("ods|")) {
+            if (e.DataId.StartsWith("ods|")) {
                 string[] names = e.DataSourceName.Split("|".ToCharArray());
                 List<DashboardSqlDataSource> dataSources = (List<DashboardSqlDataSource>)Session["ds" + e.DashboardId];
                 DashboardSqlDataSource dataSource = dataSources.First(ds => ds.ComponentName == names[1]);
@@ -46,9 +45,12 @@ namespace ASPxDashboard {
                     e.Data = rTable;
             }
         }
-        DataTable ConvertResultTableToDataTable(ResultTable resultTable) {
+
+        private DataTable ConvertResultTableToDataTable(ResultTable resultTable) {
             DataTable dataTable = new DataTable(resultTable.TableName);
+            
             resultTable.Columns.ForEach(col => dataTable.Columns.Add(new DataColumn(col.Name, col.PropertyType)));
+            
             foreach (ResultRow resultRow in resultTable) {
                 DataRow newRow = dataTable.NewRow();
                 foreach (var column in resultTable.Columns) {
@@ -56,6 +58,7 @@ namespace ASPxDashboard {
                 }
                 dataTable.Rows.Add(newRow);
             }
+
             return dataTable;
         }
     }
@@ -67,10 +70,15 @@ namespace ASPxDashboard {
             dashboard.LoadFromXDocument(base.LoadDashboard(dashboardID));
             List<DashboardSqlDataSource> dataSources = dashboard.DataSources.OfType<DashboardSqlDataSource>().ToList();
             HttpContext.Current.Session["ds" + dashboardID] = dataSources;
+           
             foreach (var query in dataSources.SelectMany(ds => ds.Queries.Select(q => new { DataSource = ds, Query = q }))) {
-                var ods = new DashboardObjectDataSource("ods|" + query.DataSource.ComponentName + "|" + query.Query.Name);
+                var odsId = "ods|" + query.DataSource.ComponentName + "|" + query.Query.Name;
+                var ods = new DashboardObjectDataSource(odsId);
+                
+                ods.DataId = odsId;
                 dashboard.DataSources.Add(ods);
-                foreach (var item in dashboard.Items.OfType<DataDashboardItem>().Where(i => Object.ReferenceEquals( i.DataSource, query.DataSource) && i.DataMember == query.Query.Name)) {
+
+                foreach (var item in dashboard.Items.OfType<DataDashboardItem>().Where(i => Object.ReferenceEquals(i.DataSource, query.DataSource) && i.DataMember == query.Query.Name)) {
                     item.DataMember = "";
                     item.DataSource = ods;
                 }
@@ -79,6 +87,7 @@ namespace ASPxDashboard {
                     parameter.DataSource = ods;
                 }
             }
+
             return dashboard.SaveToXDocument();
         }
     }
