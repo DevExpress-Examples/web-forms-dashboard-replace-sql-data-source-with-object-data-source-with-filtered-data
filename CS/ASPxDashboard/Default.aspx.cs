@@ -19,7 +19,7 @@ namespace ASPxDashboard {
 
         protected void ASPxDashboard1_DataLoading(object sender, DataLoadingWebEventArgs e) {
             if (e.DataId.StartsWith("ods|")) {
-                string[] names = e.DataSourceName.Split("|".ToCharArray());
+                string[] names = e.DataId.Split("|".ToCharArray());
                 List<DashboardSqlDataSource> dataSources = (List<DashboardSqlDataSource>)Session["ds" + e.DashboardId];
                 DashboardSqlDataSource dataSource = dataSources.First(ds => ds.ComponentName == names[1]);
                 SqlQuery query = dataSource.Queries.First(q => q.Name == names[2]);

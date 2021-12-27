@@ -15,7 +15,7 @@ Namespace ASPxDashboard
 
 		Protected Sub ASPxDashboard1_DataLoading(ByVal sender As Object, ByVal e As DataLoadingWebEventArgs)
 			If e.DataId.StartsWith("ods|") Then
-				Dim names() As String = e.DataSourceName.Split("|".ToCharArray())
+				Dim names() As String = e.DataId.Split("|".ToCharArray())
 				Dim dataSources As List(Of DashboardSqlDataSource) = DirectCast(Session("ds" & e.DashboardId), List(Of DashboardSqlDataSource))
 				Dim dataSource As DashboardSqlDataSource = dataSources.First(Function(ds) ds.ComponentName = names(1))
 				Dim query As SqlQuery = dataSource.Queries.First(Function(q) q.Name = names(2))
