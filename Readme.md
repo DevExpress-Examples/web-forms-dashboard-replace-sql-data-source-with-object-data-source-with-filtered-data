@@ -27,7 +27,7 @@
 - [How to Register Data Sources for ASP.NET Web Forms Dashboard Control](https://github.com/DevExpress-Examples/asp-net-web-forms-dashboard-register-data-sources)
 - [Dashboard for Web Forms - How to connect the Web Dashboard to an SQL database](https://github.com/DevExpress-Examples/aspxdashboard-how-to-connect-the-web-dashboard-to-an-sql-database-t409084)
 <!-- feedback -->
-## Does this example address your development requirements/objectives?
+## Does This Example Address Your Development Requirements/Objectives?
 
 [<img src="https://www.devexpress.com/support/examples/i/yes-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=web-forms-dashboard-replace-sql-data-source-with-object-data-source-with-filtered-data&~~~was_helpful=yes) [<img src="https://www.devexpress.com/support/examples/i/no-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=web-forms-dashboard-replace-sql-data-source-with-object-data-source-with-filtered-data&~~~was_helpful=no)
 
